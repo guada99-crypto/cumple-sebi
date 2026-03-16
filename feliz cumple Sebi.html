@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Feliz cumple mi príncipe ❤️</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background: radial-gradient(circle at top, #1b2735, #090a0f);
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+flex-direction:column;
+text-align:center;
+}
+
+/* sobre */
+
+#envelope{
+width:200px;
+height:120px;
+background:#ff6b81;
+position:relative;
+cursor:pointer;
+border-radius:5px;
+}
+
+#envelope:before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:0;
+height:0;
+border-left:100px solid transparent;
+border-right:100px solid transparent;
+border-bottom:60px solid #ff4757;
+}
+
+#contenido{
+display:none;
+max-width:650px;
+background:rgba(0,0,0,0.6);
+padding:30px;
+border-radius:15px;
+}
+
+button{
+padding:12px 22px;
+font-size:18px;
+border:none;
+border-radius:8px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+margin-top:20px;
+}
+
+.gallery{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+justify-content:center;
+margin-top:20px;
+}
+
+.gallery img{
+width:140px;
+border-radius:10px;
+}
+
+/* raspa */
+
+#sorpresaAnimada{
+display:none;
+font-size:28px;
+margin-top:20px;
+color:#ff4d6d;
+font-weight:bold;
+animation:pop 0.6s ease;
+}
+
+@keyframes pop{
+0%{transform:scale(0);opacity:0;}
+80%{transform:scale(1.2);}
+100%{transform:scale(1);opacity:1;}
+}
+
+/* corazones */
+
+.heart{
+position:fixed;
+color:red;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0);}
+100%{transform:translateY(-100vh);}
+}
+
+/* confetti */
+
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+background:red;
+top:-10px;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(100vh) rotate(720deg);
+opacity:0;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="intro">
+
+<div id="envelope" onclick="abrirCarta()"></div>
+<p>Leeme 💌</p>
+
+</div>
+
+<div id="contenido">
+
+<h1>Feliz cumple amore de la mia vita ❤️</h1>
+
+<p id="countdown"></p>
+
+<p>
+Hola mi príncipe ❤️  
+Hoy nos toca estar lejos pero con los corazones siempre cerca.  
+No quería dejar de hacerte algo especial así que te preparé esta sorpresita.  
+(al fin un año de programación sirvió de algo 😌)
+</p>
+
+<button onclick="mostrarRaspa()">Empezar la sorpresa 🎁</button>
+
+<div id="scratchArea" style="display:none">
+
+<p>Raspá la tarjeta para descubrir tu primer regalo (Condición: usar conmigo)</p>
+
+<div style="position:relative;width:300px;height:150px;margin:auto">
+
+<div id="regalo" style="
+position:absolute;
+top:0;
+left:0;
+width:300px;
+height:150px;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+">
+
+<img src="voucher.png" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+
+</div>
+
+<canvas id="scratch" width="300" height="150"
+style="position:absolute;top:0;left:0;"></canvas>
+
+</div>
+
+<div id="sorpresaAnimada">
+🎉 Espero que te guste Sebi 🎉
+</div>
+
+<br>
+
+<button onclick="abrirVideo()">Abrir la última sorpresa 🎥</button>
+
+</div>
+
+<h2 style="margin-top:30px">Algunos recuerdos nuestros ❤️</h2>
+
+<div class="gallery">
+
+<img src="foto1.jpeg">
+<img src="foto2.jpeg">
+<img src="foto3.jpeg">
+
+</div>
+
+<h2 style="margin-top:40px">
+Non vedo l'ora di stare con te, nos vemos prontito en nuestra casa
+</h2>
+
+<p>
+Quiero abrazarte y no soltarte más.
+</p>
+
+</div>
+
+<script>
+
+/* abrir carta */
+
+function abrirCarta(){
+document.getElementById("intro").style.display="none";
+document.getElementById("contenido").style.display="block";
+}
+
+/* contador cumpleaños */
+
+let cumple = new Date("March 16, 2026 00:00:00 GMT+1").getTime();
+
+let contador = setInterval(function(){
+
+let ahora = new Date().getTime();
+let distancia = cumple - ahora;
+
+let dias = Math.floor(distancia / (1000*60*60*24));
+let horas = Math.floor((distancia % (1000*60*60*24))/(1000*60*60));
+
+if(distancia>0){
+document.getElementById("countdown").innerHTML =
+"La sorpresa se abre en: "+dias+" días "+horas+" horas";
+}
+else{
+document.getElementById("countdown").innerHTML =
+"La sorpresa ya empezó 🎉";
+clearInterval(contador);
+}
+
+},1000);
+
+/* raspa */
+
+function mostrarRaspa(){
+
+document.getElementById("scratchArea").style.display="block";
+
+let canvas=document.getElementById("scratch");
+let ctx=canvas.getContext("2d");
+
+ctx.fillStyle="#C0C0C0";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+canvas.addEventListener("mousemove",function(e){
+
+if(e.buttons===1){
+
+ctx.globalCompositeOperation="destination-out";
+ctx.beginPath();
+ctx.arc(e.offsetX,e.offsetY,20,0,Math.PI*2);
+ctx.fill();
+
+document.getElementById("sorpresaAnimada").style.display="block";
+lanzarConfetti();
+
+}
+
+});
+
+}
+
+/* confetti */
+
+function lanzarConfetti(){
+
+for(let i=0;i<80;i++){
+
+let conf=document.createElement("div");
+conf.className="confetti";
+
+conf.style.left=Math.random()*100+"vw";
+conf.style.backgroundColor=
+"hsl("+Math.random()*360+",100%,50%)";
+
+document.body.appendChild(conf);
+
+setTimeout(()=>{conf.remove()},3000);
+
+}
+
+}
+
+/* video */
+
+function abrirVideo(){
+
+alert("Bonus track, algunas personas también quieren saludarte ❤️");
+
+window.open("https://drive.google.com/file/d/1Vl6GcAZ5AYrVfqt78In0k-9jW6zBdC89/view?usp=drivesdk");
+
+}
+
+/* corazones */
+
+setInterval(function(){
+
+let heart=document.createElement("div");
+
+heart.className="heart";
+heart.innerHTML="❤️";
+
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(Math.random()*20+20)+"px";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{heart.remove()},6000);
+
+},800);
+
+</script>
+
+</body>
+</html>
